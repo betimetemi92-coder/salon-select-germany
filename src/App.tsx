@@ -64,6 +64,14 @@ const App = () => (
                     </ProtectedRoute>
                   }
                 />
+                <Route
+                  path="/admin"
+                  element={
+                    <ProtectedRoute role="admin">
+                      <AdminPanel />
+                    </ProtectedRoute>
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
               </Route>
             </Routes>
