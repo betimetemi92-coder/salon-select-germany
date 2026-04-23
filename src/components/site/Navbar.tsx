@@ -20,7 +20,12 @@ const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  const dashboardPath = user?.role === "stylist" ? "/dashboard/stylist" : "/dashboard";
+  const dashboardPath =
+    user?.role === "admin"
+      ? "/admin"
+      : user?.role === "stylist"
+        ? "/dashboard/stylist"
+        : "/dashboard";
 
   const links = [
     { to: "/", label: t("nav.home"), end: true },
