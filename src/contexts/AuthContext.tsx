@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
 export type Role = "customer" | "stylist" | "admin";
+export type Gender = "male" | "female" | "diverse";
 
 // Seed a default admin account so the panel is accessible out of the box.
 const ADMIN_SEED_KEY = "coiffure_admin_seeded";
@@ -31,6 +32,7 @@ export type User = {
   name: string;
   email: string;
   role: Role;
+  gender?: Gender;
   createdAt: string;
 };
 
@@ -40,7 +42,7 @@ type AuthCtx = {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string, remember: boolean) => Promise<User>;
-  register: (data: { name: string; email: string; password: string; role: Role }) => Promise<User>;
+  register: (data: { name: string; email: string; password: string; role: Role; gender?: Gender }) => Promise<User>;
   logout: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
 };
@@ -94,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return safe;
   };
 
-  const register: AuthCtx["register"] = async ({ name, email, password, role }) => {
+  const register: AuthCtx["register"] = async ({ name, email, password, role, gender }) => {
     await new Promise((r) => setTimeout(r, 700));
     const users = readUsers();
     if (users.some((u) => u.email.toLowerCase() === email.trim().toLowerCase())) {
@@ -106,6 +108,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       email: email.trim(),
       password,
       role,
+      gender,
       createdAt: new Date().toISOString(),
     };
     writeUsers([...users, newUser]);

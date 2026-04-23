@@ -1,11 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, User as UserIcon, Scissors } from "lucide-react";
+import { Eye, EyeOff, Loader2, User as UserIcon, Scissors, Mars, Venus, Transgender } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth, Role } from "@/contexts/AuthContext";
+import { useAuth, Role, Gender } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,9 @@ const schema = z
     password: z.string().min(8, "Mindestens 8 Zeichen"),
     confirm: z.string(),
     role: z.enum(["customer", "stylist"]),
+    gender: z.enum(["male", "female", "diverse"], {
+      errorMap: () => ({ message: "Bitte Geschlecht wählen" }),
+    }),
   })
   .refine((d) => d.password === d.confirm, {
     message: "Passwörter stimmen nicht überein",
@@ -31,6 +34,7 @@ const Register = () => {
     password: "",
     confirm: "",
     role: "customer" as Role,
+    gender: "" as Gender | "",
   });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -58,6 +62,7 @@ const Register = () => {
         email: form.email,
         password: form.password,
         role: form.role,
+        gender: form.gender as Gender,
       });
       toast.success("Willkommen bei Coiffure!");
       navigate(u.role === "stylist" ? "/dashboard/stylist" : "/dashboard", { replace: true });
