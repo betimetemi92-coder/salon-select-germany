@@ -21,6 +21,7 @@ import Contact from "./pages/Contact";
 import { Privacy, Terms, Impressum } from "./pages/Legal";
 import UserDashboard from "./pages/dashboard/UserDashboard";
 import StylistDashboard from "./pages/dashboard/StylistDashboard";
+import AdminPanel from "./pages/dashboard/AdminPanel";
 
 const queryClient = new QueryClient();
 
