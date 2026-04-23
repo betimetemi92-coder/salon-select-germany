@@ -1,7 +1,7 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, User as UserIcon, Scissors, Mars, Venus, Transgender } from "lucide-react";
+import { Eye, EyeOff, Loader2, User as UserIcon, Scissors, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
