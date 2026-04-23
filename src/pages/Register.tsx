@@ -116,6 +116,35 @@ const Register = () => {
             </div>
           </div>
 
+          {/* Gender selector */}
+          <div className="space-y-2">
+            <Label>Geschlecht</Label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { v: "male", label: "Mann" },
+                { v: "female", label: "Frau" },
+                { v: "diverse", label: "Divers" },
+              ].map((g) => {
+                const active = form.gender === g.v;
+                return (
+                  <button
+                    type="button"
+                    key={g.v}
+                    onClick={() => set("gender", g.v as Gender)}
+                    className={cn(
+                      "p-3 rounded-2xl border text-center transition-smooth",
+                      active ? "border-gold bg-gold/5" : "border-border hover:border-foreground/30",
+                    )}
+                  >
+                    <UserCircle2 className={cn("h-5 w-5 mx-auto mb-1", active ? "text-gold" : "text-muted-foreground")} />
+                    <div className="font-medium text-sm">{g.label}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.gender && <p className="text-xs text-destructive">{errors.gender}</p>}
+          </div>
+
           <div className="space-y-2">
             <Label htmlFor="name">Voller Name</Label>
             <Input id="name" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="Anna Müller" maxLength={80} />
