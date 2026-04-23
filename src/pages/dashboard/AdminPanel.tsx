@@ -1,5 +1,4 @@
-import { useMemo, useState } from "react";
-import { Helmet } from "react-helmet-async";
+import { useEffect, useMemo, useState } from "react";
 import { format, parseISO } from "date-fns";
 import { de } from "date-fns/locale";
 import {
