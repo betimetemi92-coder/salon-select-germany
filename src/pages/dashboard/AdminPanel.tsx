@@ -128,11 +128,6 @@ const AdminPanel = () => {
 
   return (
     <>
-      <Helmet>
-        <title>Admin Panel · Coiffure</title>
-        <meta name="description" content="Übersicht aller Termine und Buchungen auf Coiffure." />
-      </Helmet>
-
       <section className="pt-32 pb-20">
         <div className="container">
           <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
