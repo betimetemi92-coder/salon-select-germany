@@ -23,7 +23,12 @@ export const ProtectedRoute = ({
     return <Navigate to="/login" state={{ from: location.pathname }} replace />;
   }
   if (role && user.role !== role) {
-    const target = user.role === "stylist" ? "/dashboard/stylist" : "/dashboard";
+    const target =
+      user.role === "admin"
+        ? "/admin"
+        : user.role === "stylist"
+          ? "/dashboard/stylist"
+          : "/dashboard";
     return <Navigate to={target} replace />;
   }
   return <>{children}</>;
