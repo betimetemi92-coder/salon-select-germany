@@ -1,8 +1,22 @@
+import { useNavigate } from "react-router-dom";
 import heroImg from "@/assets/hero.jpg";
 import { Button } from "@/components/ui/button";
 import { Search, MapPin, Scissors, Star } from "lucide-react";
+import { useState } from "react";
 
 const Hero = () => {
+  const navigate = useNavigate();
+  const [city, setCity] = useState("");
+  const [service, setService] = useState("");
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    const params = new URLSearchParams();
+    if (city) params.set("city", city);
+    if (service) params.set("q", service);
+    navigate(`/discover${params.toString() ? `?${params}` : ""}`);
+  };
+
   return (
     <section className="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden">
       <div className="absolute inset-0 -z-10 gradient-warm" />
@@ -10,7 +24,6 @@ const Hero = () => {
       <div className="absolute bottom-0 -right-20 w-[28rem] h-[28rem] rounded-full bg-gold/10 blur-3xl -z-10" />
 
       <div className="container grid lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-        {/* Copy */}
         <div className="lg:col-span-6 space-y-8 animate-fade-up">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-secondary border border-border/60 text-xs tracking-widest uppercase">
             <span className="h-1.5 w-1.5 rounded-full bg-gold" />
@@ -27,12 +40,16 @@ const Hero = () => {
             Entdecke Berlins, Münchens und Hamburgs feinste Hairstylisten und Barbiere. Verifizierte Profis, transparente Preise, sofortige Buchung.
           </p>
 
-          {/* Search bar */}
-          <div className="bg-card rounded-2xl shadow-elegant border border-border/60 p-2 flex flex-col sm:flex-row gap-2 max-w-2xl">
+          <form
+            onSubmit={handleSearch}
+            className="bg-card rounded-2xl shadow-elegant border border-border/60 p-2 flex flex-col sm:flex-row gap-2 max-w-2xl"
+          >
             <div className="flex items-center gap-3 flex-1 px-4 py-3 sm:border-r border-border/60">
               <MapPin className="h-4 w-4 text-gold shrink-0" />
               <input
                 type="text"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
                 placeholder="Stadt oder PLZ"
                 className="bg-transparent w-full text-sm outline-none placeholder:text-muted-foreground/70"
               />
@@ -41,14 +58,16 @@ const Hero = () => {
               <Scissors className="h-4 w-4 text-gold shrink-0" />
               <input
                 type="text"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
                 placeholder="Service – z.B. Coloration"
                 className="bg-transparent w-full text-sm outline-none placeholder:text-muted-foreground/70"
               />
             </div>
-            <Button variant="premium" size="lg" className="sm:w-auto w-full">
+            <Button type="submit" variant="premium" size="lg" className="sm:w-auto w-full">
               <Search className="h-4 w-4 mr-2" /> Suchen
             </Button>
-          </div>
+          </form>
 
           <div className="flex items-center gap-8 pt-4">
             <div>
@@ -68,7 +87,6 @@ const Hero = () => {
           </div>
         </div>
 
-        {/* Image */}
         <div className="lg:col-span-6 relative animate-fade-in">
           <div className="relative aspect-[4/5] max-w-lg mx-auto">
             <div className="absolute inset-0 rounded-[2rem] overflow-hidden shadow-elegant">
@@ -82,7 +100,6 @@ const Hero = () => {
               <div className="absolute inset-0" style={{ background: "var(--gradient-overlay)" }} />
             </div>
 
-            {/* Floating cards */}
             <div className="absolute -bottom-6 -left-6 bg-card rounded-2xl shadow-elegant p-4 flex items-center gap-3 border border-border/60 animate-fade-up" style={{ animationDelay: "0.4s" }}>
               <div className="h-10 w-10 rounded-full bg-gold/20 flex items-center justify-center">
                 <Star className="h-5 w-5 fill-gold text-gold" />

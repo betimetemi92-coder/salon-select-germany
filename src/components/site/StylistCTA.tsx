@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
@@ -26,8 +27,12 @@ const StylistCTA = () => {
                 Schließe dich über 2.400 Profis an, die ihr Geschäft mit Coiffure ausbauen — keine Einrichtungsgebühr, transparente Konditionen.
               </p>
               <div className="flex flex-wrap gap-4">
-                <Button variant="gold" size="lg">Jetzt registrieren</Button>
-                <Button variant="ghostLight" size="lg">Mehr erfahren</Button>
+                <Button variant="gold" size="lg" asChild>
+                  <Link to="/register">Jetzt registrieren</Link>
+                </Button>
+                <Button variant="ghostLight" size="lg" asChild>
+                  <Link to="/how-it-works">Mehr erfahren</Link>
+                </Button>
               </div>
             </div>
 
