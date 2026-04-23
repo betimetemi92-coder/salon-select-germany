@@ -42,7 +42,9 @@ const Login = () => {
       const u = await login(email, password, remember);
       toast.success(`Willkommen zurück, ${u.name.split(" ")[0]}!`);
       const from = (location.state as { from?: string })?.from;
-      const target = from || (u.role === "stylist" ? "/dashboard/stylist" : "/dashboard");
+      const roleHome =
+        u.role === "admin" ? "/admin" : u.role === "stylist" ? "/dashboard/stylist" : "/dashboard";
+      const target = from || roleHome;
       navigate(target, { replace: true });
     } catch (err: unknown) {
       setServerError(err instanceof Error ? err.message : "Login fehlgeschlagen");
