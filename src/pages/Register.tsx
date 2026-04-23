@@ -1,11 +1,11 @@
 import { FormEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { Eye, EyeOff, Loader2, User as UserIcon, Scissors } from "lucide-react";
+import { Eye, EyeOff, Loader2, User as UserIcon, Scissors, UserCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useAuth, Role } from "@/contexts/AuthContext";
+import { useAuth, Role, Gender } from "@/contexts/AuthContext";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 
@@ -16,6 +16,9 @@ const schema = z
     password: z.string().min(8, "Mindestens 8 Zeichen"),
     confirm: z.string(),
     role: z.enum(["customer", "stylist"]),
+    gender: z.enum(["male", "female", "diverse"], {
+      errorMap: () => ({ message: "Bitte Geschlecht wählen" }),
+    }),
   })
   .refine((d) => d.password === d.confirm, {
     message: "Passwörter stimmen nicht überein",
@@ -31,6 +34,7 @@ const Register = () => {
     password: "",
     confirm: "",
     role: "customer" as Role,
+    gender: "" as Gender | "",
   });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -58,6 +62,7 @@ const Register = () => {
         email: form.email,
         password: form.password,
         role: form.role,
+        gender: form.gender as Gender,
       });
       toast.success("Willkommen bei Coiffure!");
       navigate(u.role === "stylist" ? "/dashboard/stylist" : "/dashboard", { replace: true });
@@ -109,6 +114,35 @@ const Register = () => {
                 );
               })}
             </div>
+          </div>
+
+          {/* Gender selector */}
+          <div className="space-y-2">
+            <Label>Geschlecht</Label>
+            <div className="grid grid-cols-3 gap-3">
+              {[
+                { v: "male", label: "Mann" },
+                { v: "female", label: "Frau" },
+                { v: "diverse", label: "Divers" },
+              ].map((g) => {
+                const active = form.gender === g.v;
+                return (
+                  <button
+                    type="button"
+                    key={g.v}
+                    onClick={() => set("gender", g.v as Gender)}
+                    className={cn(
+                      "p-3 rounded-2xl border text-center transition-smooth",
+                      active ? "border-gold bg-gold/5" : "border-border hover:border-foreground/30",
+                    )}
+                  >
+                    <UserCircle2 className={cn("h-5 w-5 mx-auto mb-1", active ? "text-gold" : "text-muted-foreground")} />
+                    <div className="font-medium text-sm">{g.label}</div>
+                  </button>
+                );
+              })}
+            </div>
+            {errors.gender && <p className="text-xs text-destructive">{errors.gender}</p>}
           </div>
 
           <div className="space-y-2">
