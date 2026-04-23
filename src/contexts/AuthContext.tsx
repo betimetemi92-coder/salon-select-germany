@@ -1,6 +1,31 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from "react";
 
-export type Role = "customer" | "stylist";
+export type Role = "customer" | "stylist" | "admin";
+
+// Seed a default admin account so the panel is accessible out of the box.
+const ADMIN_SEED_KEY = "coiffure_admin_seeded";
+const seedAdmin = () => {
+  if (typeof window === "undefined") return;
+  if (localStorage.getItem(ADMIN_SEED_KEY)) return;
+  try {
+    const users = JSON.parse(localStorage.getItem("coiffure_users") || "[]");
+    if (!users.some((u: any) => u.email === "admin@coiffure.de")) {
+      users.push({
+        id: crypto.randomUUID(),
+        name: "Admin",
+        email: "admin@coiffure.de",
+        password: "admin123",
+        role: "admin",
+        createdAt: new Date().toISOString(),
+      });
+      localStorage.setItem("coiffure_users", JSON.stringify(users));
+    }
+    localStorage.setItem(ADMIN_SEED_KEY, "1");
+  } catch {
+    // ignore
+  }
+};
+seedAdmin();
 export type User = {
   id: string;
   name: string;
